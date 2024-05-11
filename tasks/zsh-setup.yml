@@ -1,0 +1,26 @@
+- name: Install zsh
+  apt: name=zsh
+
+- name: Set zsh as default shell
+  become_user: root
+  user:
+    name: '{{ user }}'
+    shell: /bin/zsh
+
+- name: Check ohmyzsh already installed 
+  ansible.builtin.stat:
+    path: $HOME/.oh-my-zsh
+  register: omz
+
+- name: Fetch script to install ohmyzsh
+  ansible.builtin.uri:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    return_content: yes
+  register: ohmyzshscript
+  when: omz.stat.islnk is not defined
+
+- name: Install ohmyzsh
+  ansible.builtin.shell:
+    cmd: sh -s -- -y
+    stdin: "{{ ohmyzshscript.content }}"
+  when: omz.stat.islnk is not defined

@@ -1,0 +1,20 @@
+- name: Check if zoxide is installed
+  shell: command -v zoxide > /dev/null 2>&1
+  register: is_installed
+  ignore_errors: yes
+
+- name: Download zoxide deb package
+  uri:
+    url: https://github.com/ajeetdsouza/zoxide/releases/download/v0.9.4/zoxide_0.9.4-1_amd64.deb
+    dest: '{{ zoxide_install_temp_folder }}'
+    mode: 0700
+    status_code: 200,304
+  when: is_installed.rc != 0
+
+- name: Install zoxide deb package
+  become_user: root
+    #  shell: apt-get install {{ zoxide_install_temp_folder|quote }} -y --allow-unauthenticated
+  apt:
+    deb: "{{ zoxide_install_temp_folder }}"
+    allow-unauthenticated: yes
+  when: is_installed.rc != 0

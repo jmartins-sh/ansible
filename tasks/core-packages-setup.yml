@@ -1,0 +1,15 @@
+- name: Install Apt Packages
+  become_user: root
+  apt:
+    pkg: 
+      - stow
+      - ripgrep
+      - fzf
+      - tmux
+      - xclip
+      - tldr
+      - gcc
+      - unzip
+  tags:
+    - install
+    - core

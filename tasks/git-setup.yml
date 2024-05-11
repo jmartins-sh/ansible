@@ -1,0 +1,34 @@
+- name: Add git apt repo
+  become_user: root
+  apt_repository:
+    repo: ppa:git-core/ppa
+
+- name: Remove git's old version
+  become_user: root
+  apt:
+    name: git
+    state: absent 
+
+- name: Install git
+  become_user: root
+  apt: 
+    name: git
+    update_cache: true
+
+- name: Set Auto Setup Remote Upstream
+  git_config:
+    name: push.autoSetupRemote
+    scope: global
+    value: 'true'
+
+- name: Set Checkout Alias to Existing Branch
+  git_config:
+    name: alias.co
+    scope: global
+    value: checkout
+
+- name: Set Checkout Alias to New Branch
+  git_config:
+    name: alias.cob
+    scope: global
+    value: checkout -b

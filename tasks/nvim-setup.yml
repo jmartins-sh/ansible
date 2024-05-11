@@ -1,0 +1,19 @@
+- name: Download and unarchive neovim 
+  ansible.builtin.unarchive:
+    src: https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz
+    dest: "{{ lookup('env', 'HOME')}}/.local/bin"
+    remote_src: yes
+  tags:
+    - install
+    - neovim
+
+- name: Create symlink in .local/bin
+  file: 
+    src:  "{{ lookup('env', 'HOME')}}/.local/bin/nvim-linux64/bin/nvim"
+    dest: "{{ lookup('env', 'HOME')}}/.local/bin/nvim"
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    state: link
+  tags:
+    - install
+    - neovim
