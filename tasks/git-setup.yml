@@ -2,33 +2,70 @@
   become_user: root
   apt_repository:
     repo: ppa:git-core/ppa
+  tags:
+    - install
+    - git
 
 - name: Remove git's old version
   become_user: root
   apt:
     name: git
     state: absent 
+  tags:
+    - install
+    - git
 
 - name: Install git
   become_user: root
   apt: 
     name: git
     update_cache: true
+  tags:
+    - install
+    - git
 
 - name: Set Auto Setup Remote Upstream
   git_config:
     name: push.autoSetupRemote
     scope: global
     value: 'true'
+  tags:
+    - install
+    - git
 
 - name: Set Checkout Alias to Existing Branch
   git_config:
     name: alias.co
     scope: global
     value: checkout
+  tags:
+    - install
+    - git
 
 - name: Set Checkout Alias to New Branch
   git_config:
     name: alias.cob
     scope: global
     value: checkout -b
+  tags:
+    - install
+    - git
+
+- name: Set Pull Alias
+  git_config:
+    name: alias.pl
+    scope: global
+    value: pull
+  tags:
+    - install
+    - git
+
+- name: Set Push Alias
+  git_config:
+    name: alias.ps
+    scope: global
+    value: push
+  tags:
+    - install
+    - git
+
