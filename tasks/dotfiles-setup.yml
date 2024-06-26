@@ -7,6 +7,12 @@
     update: yes
     accept_hostkey: yes
     version: main
+  tags:
+    - install
+    - dotfiles
 
 - name: Stow dotfiles
   shell: cd $HOME/.dotfiles && ./ubuntu-install
+  tags:
+    - install
+    - dotfiles

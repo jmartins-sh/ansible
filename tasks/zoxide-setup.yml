@@ -2,6 +2,9 @@
   shell: command -v zoxide > /dev/null 2>&1
   register: is_installed
   ignore_errors: yes
+  tags:
+    - install
+    - core
 
 - name: Download zoxide deb package
   uri:
@@ -10,6 +13,9 @@
     mode: 0700
     status_code: 200,304
   when: is_installed.rc != 0
+  tags:
+    - install
+    - core
 
 - name: Install zoxide deb package
   become_user: root
@@ -18,3 +24,6 @@
     deb: "{{ zoxide_install_temp_folder }}"
     allow-unauthenticated: yes
   when: is_installed.rc != 0
+  tags:
+    - install
+    - core

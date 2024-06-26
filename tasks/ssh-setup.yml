@@ -3,6 +3,10 @@
     dest: "{{ lookup('env', 'HOME') }}/.ssh"
     mode: 0700
     state: directory
+  tags:
+    - install
+    - ssh
+
 - name: Install ssh key
   copy:
     src: "{{ item.source_key }}"
@@ -10,6 +14,9 @@
     mode: 0600
   loop:
     "{{ sshs|flatten(levels=1) }}"
+  tags:
+    - install
+    - ssh
 
 - name: Install ssh key public
   copy:
@@ -18,6 +25,9 @@
     mode: 0644
   loop:
     "{{ sshs|flatten(levels=1) }}"
+  tags:
+    - install
+    - ssh
 
 - name: Set authorized key took from file
   authorized_key:
@@ -28,3 +38,6 @@
       #- "{{ lookup('env', 'HOME') }}/.ssh/{{ item.dest_key }}.pub"
   with_items:
     "{{ sshs }}"
+  tags:
+    - install
+    - ssh
